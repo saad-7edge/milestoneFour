@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import ReactPaginate from "react-paginate";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import ModalContent from "./ModalContent";
+import RowItem from "./RowItem";
 
 interface PaginatedItemsProps {
 	itemsPerPage: number; // Define the type for itemsPerPage
@@ -81,49 +82,6 @@ function PaginatedItems({ itemsPerPage }: PaginatedItemsProps) {
 		console.log(apiData, "is list of items");
 	}, [apiData]);
 
-	const generateRow = (item: Product) => {
-		return (
-			<tr
-				key={item.id}
-				className="h-[50px] border-b-[1px] border-solid border-black "
-			>
-				<td className="pl-3 w-3/6 min-w-[500px] ">
-					<div className="flex">
-						<div className="h-[50px] w-[50px] border-2 rounded-full overflow-hidden flex-shrink-0">
-							<img
-								src={item?.images[0]}
-								className="w-full h-full object-cover"
-							/>
-						</div>
-						<div className="text-clip overflow-hidden whitespace-nowrap flex-grow">
-							{item.title}
-						</div>
-					</div>
-				</td>
-				<td className="w-1/6 pl-3">
-					{item.category ? item.category["name"] : null}
-				</td>
-				<td className="w-1/6 pl-3">{item.price}</td>
-				<td className="w-1/6 pl-3">{item.id}</td>
-				<td className="w-1/6 pl-3 pr-3 sticky right-0 bg-white z-10">
-					<div className="flex gap-x-5 items-center">
-						<h3
-							className="text-orange-600 cursor-pointer"
-							onClick={() => openModal(item)}
-						>
-							Edit
-						</h3>
-						<i
-							className="fa fa-times-circle cursor-pointer"
-							aria-hidden="true"
-							onClick={() => deleteItem(item.id)}
-						></i>
-					</div>
-				</td>
-			</tr>
-		);
-	};
-
 	const deleteItem = async (id: number) => {
 		try {
 			const requestOptions = {
@@ -186,7 +144,14 @@ function PaginatedItems({ itemsPerPage }: PaginatedItemsProps) {
 						<th className="w-1/6 pl-3"></th>
 					</tr>
 					<tbody className="overflow-auto h-[calc(100vh-500px)]">
-						{newItems?.map((item) => generateRow(item))}
+						{/* {newItems?.map((item) => generateRow(item))} */}
+						{newItems?.map((newItem) => (
+							<RowItem
+								item={newItem}
+								openModal={openModal}
+								deleteItem={deleteItem}
+							/>
+						))}
 					</tbody>
 				</table>
 			</div>
