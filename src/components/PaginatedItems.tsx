@@ -91,6 +91,7 @@ function PaginatedItems({ itemsPerPage }: PaginatedItemsProps) {
 				`https://api.escuelajs.co/api/v1/products/${id}`,
 				requestOptions
 			);
+			setApiData(apiData.filter((item) => item.id !== id));
 			if (response.ok) {
 				setApiData(apiData.filter((item) => item.id !== id));
 				console.log("Deleted Succesfully !");

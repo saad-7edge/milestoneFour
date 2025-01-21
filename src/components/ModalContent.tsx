@@ -39,7 +39,7 @@ function ModalContent({ isOpen, onClose, data, onSave }: ModalContentProps) {
 	useEffect(() => {
 		console.log(uploadedFiles, "is uploadd file");
 		console.log(data, "is dataaa");
-	});
+	}, []);
 
 	const handleCategoryChange = (
 		selectedOption: SingleValue<{
@@ -68,15 +68,17 @@ function ModalContent({ isOpen, onClose, data, onSave }: ModalContentProps) {
 				description: input.description,
 				images: uploadedFiles,
 			});
+			onClose();
 		} else {
 			onSave({
-				id: 89,
+				id: new Date().getTime(),
 				title: input.title,
 				price: +input.price,
 				category: { id: selectedCategory.value, name: selectedCategory.label },
 				description: input.description,
 				images: uploadedFiles,
 			});
+			onClose();
 		}
 	};
 	useEffect(() => {
@@ -91,6 +93,11 @@ function ModalContent({ isOpen, onClose, data, onSave }: ModalContentProps) {
 		}
 	}, [isOpen, data]);
 
+	const handleClose = () => {
+		setInput({ title: "", price: 0, description: "" });
+		onClose();
+	};
+
 	return (
 		<>
 			<Modal
@@ -101,7 +108,7 @@ function ModalContent({ isOpen, onClose, data, onSave }: ModalContentProps) {
 				className="bg-white w-[90%] sm:w-[450px] h-auto min-h-[80%] max-h-[90%] rounded-lg shadow-lg overflow-hidden relative"
 			>
 				<div className="flex bg-gray-200 h-[50px] items-center justify-end pr-6 ">
-					<button onClick={onClose}>
+					<button onClick={handleClose}>
 						<i className="fa-solid fa-xmark"></i>
 					</button>
 				</div>
@@ -171,10 +178,18 @@ function ModalContent({ isOpen, onClose, data, onSave }: ModalContentProps) {
 							img={data?.images}
 							onFilesUpdate={handleFilesUpdate}
 						/>
+						{/* <Dropedzone className={
+								"flex border border-gray-300 border-dashed rounded h-[100px] cursor-pointer justify-center items-center text-gray-400"
+							} /> */}
 					</div>
 				</div>
 				<div className="flex bg-gray-200 h-[50px] w-full items-center justify-end pr-6 ">
-					<button onClick={handleSave}>Save Changes</button>
+					<button
+						onClick={handleSave}
+						className="bg-purple-600 text-white h-[40px] p-2 rounded"
+					>
+						Save Changes
+					</button>
 				</div>
 			</Modal>
 		</>

@@ -6,11 +6,10 @@ interface DropZoneProps {
 	className: string;
 	onFilesUpdate: (files: string[]) => void;
 }
-
 interface FileItem {
 	name: string;
 	preview: string;
-	isNew: boolean; // To differentiate between uploaded files and pre-existing images
+	isNew: boolean;
 }
 
 function DropZone({ className, img = [], onFilesUpdate }: DropZoneProps) {
@@ -36,8 +35,17 @@ function DropZone({ className, img = [], onFilesUpdate }: DropZoneProps) {
 			});
 		},
 		[onFilesUpdate]
-	);
+	); 
 
+	// useEffect(() => {
+	// 	// Initialize with pre-existing images
+	// 	const existingImages = img.map((image) => ({
+	// 		name: image, // Use image URL as the name for simplicity
+	// 		preview: image,
+	// 		isNew: false,
+	// 	}));
+	// 	setFiles(existingImages);
+	// }, [img]);
 	useEffect(() => {
 		// Initialize with pre-existing images
 		const existingImages = img.map((image) => ({
@@ -46,7 +54,7 @@ function DropZone({ className, img = [], onFilesUpdate }: DropZoneProps) {
 			isNew: false,
 		}));
 		setFiles(existingImages);
-	}, [img]);
+	}, []);
 
 	const removeFile = (preview: string) => {
 		setFiles((currentFiles) => {
